@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	JSONTypeMap   = iota
-	JSONTypeArray = 1 << iota
+	JSONTypeMap = 1 << iota
+	JSONTypeArray
 	JSONTypeString
 	JSONTypeBool
 	JSONTypeNumber

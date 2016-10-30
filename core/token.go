@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	TokenTypeLeftBracket  = iota
-	TokenTypeRightBracket = 1 << iota
+	TokenTypeLeftBracket = 1 << iota
+	TokenTypeRightBracket
 	TokenTypeLeftSquareBracket
 	TokenTypeRightSquareBracket
 	TokenTypeComma
