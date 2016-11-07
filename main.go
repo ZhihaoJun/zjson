@@ -8,7 +8,7 @@ import (
 func main() {
 	log.Println("hello zjson")
 
-	t1 := `111`
+	t1 := `true`
 	t2 := `{"a":"12"}`
 	t3 := `{"abc":["10"]}`
 	t4 := `{"abc": "tt","hh": "h1","cc": {}}`

@@ -113,7 +113,7 @@ type BoolLexer struct {
 }
 
 func (bl *BoolLexer) Run(s []byte) (int, *Token, error) {
-	if s[0] != 't' || s[0] != 'f' {
+	if s[0] != 't' && s[0] != 'f' {
 		return 0, nil, nil
 	}
 	token := &Token{
