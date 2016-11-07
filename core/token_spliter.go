@@ -1,9 +1,5 @@
 package core
 
-import (
-	"log"
-)
-
 type Lexer interface {
 	Run([]byte) (int, *Token, error)
 }
@@ -21,37 +17,23 @@ func NewTokenSpliter(lexers ...Lexer) *TokenSpliter {
 func (ts *TokenSpliter) Run(s []byte) ([]*Token, error) {
 	r := []*Token{}
 	for i := 0; i < len(s); {
-		log.Println("lex start at ", i)
-		log.Println(string(s[i:]))
 		for _, lexer := range ts.lexers {
 			n, token, err := lexer.Run(s[i:])
 			if n > 0 {
 				if err != nil {
 					return nil, err
 				}
+
+				// move to next token's start
 				i += n
 				if token != nil {
 					r = append(r, token)
 				}
+
+				// only one lexer will work
 				break
 			}
 		}
 	}
 	return r, nil
-}
-
-func NewJSONTokenSpliter() *TokenSpliter {
-	return NewTokenSpliter(
-		&LeftBracketLexer{},
-		&RightBracketLexer{},
-		&LeftSquareBracketLexer{},
-		&RightSquareBracketLexer{},
-		&CommaLexer{},
-		&ColonLexer{},
-		&StringLexer{},
-		&BoolLexer{},
-		&NumberLexer{},
-		&NullLexer{},
-		&BlankLexer{},
-	)
 }

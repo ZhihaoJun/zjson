@@ -154,7 +154,7 @@ func (nl *NumberLexer) Run(s []byte) (int, *Token, error) {
 	}
 	i := 0
 	v := 0
-	for s[i] >= '0' && s[i] <= '9' {
+	for i < len(s) && s[i] >= '0' && s[i] <= '9' {
 		v = v*10 + int(s[i]-'0')
 		i++
 	}
@@ -173,4 +173,20 @@ func (bl *BlankLexer) Run(s []byte) (int, *Token, error) {
 		return 1, nil, nil
 	}
 	return 0, nil, nil
+}
+
+func NewJSONTokenSpliter() *TokenSpliter {
+	return NewTokenSpliter(
+		&LeftBracketLexer{},
+		&RightBracketLexer{},
+		&LeftSquareBracketLexer{},
+		&RightSquareBracketLexer{},
+		&CommaLexer{},
+		&ColonLexer{},
+		&StringLexer{},
+		&BoolLexer{},
+		&NumberLexer{},
+		&NullLexer{},
+		&BlankLexer{},
+	)
 }

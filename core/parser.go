@@ -148,11 +148,16 @@ func (p *Parser) stringState(fsm *FSM, _ int) error {
 		Type: JSONTypeString,
 		Str:  t.ToString(),
 	}
-	switch p.parent().Type {
-	case JSONTypeMap:
-		p.setParentMap(j)
-	case JSONTypeArray:
-		p.parentArrAppend(j)
+	if p.parent() == nil {
+		p.pushJSONStack(j)
+		p.popJSONStack()
+	} else {
+		switch p.parent().Type {
+		case JSONTypeMap:
+			p.setParentMap(j)
+		case JSONTypeArray:
+			p.parentArrAppend(j)
+		}
 	}
 	return nil
 }
@@ -163,11 +168,16 @@ func (p *Parser) numberState(fsm *FSM, _ int) error {
 		Type:   JSONTypeNumber,
 		Number: t.ToNumber(),
 	}
-	switch p.parent().Type {
-	case JSONTypeMap:
-		p.setParentMap(j)
-	case JSONTypeArray:
-		p.parentArrAppend(j)
+	if p.parent() == nil {
+		p.pushJSONStack(j)
+		p.popJSONStack()
+	} else {
+		switch p.parent().Type {
+		case JSONTypeMap:
+			p.setParentMap(j)
+		case JSONTypeArray:
+			p.parentArrAppend(j)
+		}
 	}
 	return nil
 }
@@ -178,11 +188,16 @@ func (p *Parser) boolState(fsm *FSM, _ int) error {
 		Type: JSONTypeBool,
 		Bool: t.ToBool(),
 	}
-	switch p.parent().Type {
-	case JSONTypeMap:
-		p.setParentMap(j)
-	case JSONTypeArray:
-		p.parentArrAppend(j)
+	if p.parent() == nil {
+		p.pushJSONStack(j)
+		p.popJSONStack()
+	} else {
+		switch p.parent().Type {
+		case JSONTypeMap:
+			p.setParentMap(j)
+		case JSONTypeArray:
+			p.parentArrAppend(j)
+		}
 	}
 	return nil
 }
@@ -191,11 +206,16 @@ func (p *Parser) nullState(fsm *FSM, _ int) error {
 	j := &JSON{
 		Type: JSONTypeNull,
 	}
-	switch p.parent().Type {
-	case JSONTypeMap:
-		p.setParentMap(j)
-	case JSONTypeArray:
-		p.parentArrAppend(j)
+	if p.parent() == nil {
+		p.pushJSONStack(j)
+		p.popJSONStack()
+	} else {
+		switch p.parent().Type {
+		case JSONTypeMap:
+			p.setParentMap(j)
+		case JSONTypeArray:
+			p.parentArrAppend(j)
+		}
 	}
 	return nil
 }
@@ -233,6 +253,14 @@ func NewJSONParser() *Parser {
 			fsm.UpdateState(objectStartState)
 		case TokenTypeLeftSquareBracket:
 			fsm.UpdateState(arrayStartState)
+		case TokenTypeString:
+			fsm.UpdateState(stringState)
+		case TokenTypeNumber:
+			fsm.UpdateState(numberState)
+		case TokenTypeBool:
+			fsm.UpdateState(boolState)
+		case TokenTypeNull:
+			fsm.UpdateState(nullState)
 		}
 		return nil
 	})

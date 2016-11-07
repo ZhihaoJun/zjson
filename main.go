@@ -8,7 +8,7 @@ import (
 func main() {
 	log.Println("hello zjson")
 
-	t1 := `"abc"`
+	t1 := `111`
 	t2 := `{"a":"12"}`
 	t3 := `{"abc":["10"]}`
 	t4 := `{"abc": "tt","hh": "h1","cc": {}}`
@@ -20,7 +20,9 @@ func main() {
 			"yy":[
 				{"aa":"123"},
 				"123",
-				123
+				123,
+				"\n",
+				"😄"
 			]
 		}
 	}`
@@ -35,7 +37,7 @@ func main() {
 
 	ts := core.NewJSONTokenSpliter()
 
-	tokens, err := ts.Run([]byte(t8))
+	tokens, err := ts.Run([]byte(t1))
 	if err != nil {
 		panic(err)
 	}
